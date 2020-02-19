@@ -7,6 +7,8 @@ See MCP3428.cpp for licence
 
 */
 
+#include <stdint.h>
+
 #define I2C_BUS "/dev/i2c-1"
 
 #define CONFIG_INIT_CONVERSION 1U
@@ -19,7 +21,7 @@ See MCP3428.cpp for licence
 
 #define CONFIG_CONTINUOUS_CONVERSION_MODE 1U 
 #define CONFIG_ONESHOT_CONVERSION_MODE		0U
-hi
+
 #define CONFIG_12BIT_240SPS 0U
 #define CONFIG_14BIT_60SPS	1U
 #define CONFIG_16BIT_15SPS	2U
@@ -39,23 +41,21 @@ class MCP3428{
 		uint8_t _data;
 		
 		void _writeConfig();
-		void _setChannel(uint8_t channel);
+		void _setChannel(uint8_t);
 	
 	public:
 			
-		MCP3428(uint8_t i2c_address);
+		MCP3428(uint8_t);
 		~MCP3428();
 		
-		void setConfig(uint8_t RDYflag,
-									 uint8_t channel,
-									 uint8_t conversion_mode,
-									 uint8_t resolution,
-									 uint8_t PGA);
+		void setConfig(uint8_t,uint8_t,
+									 uint8_t,uint8_t,
+									 uint8_t);
 	
 		void readConfig();
 		
 		
-		int16_t readChannel(uint8_t channel);
-		double readChannelScaled(uint8_t channel);
+		int16_t readChannel(uint8_t);
+		double readChannelScaled(uint8_t);
 
 };
