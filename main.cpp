@@ -1,0 +1,29 @@
+#include <iostream.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "MCP3428.h"
+
+int main(){
+	
+	MCP3428 mysensor(0x6e);
+	
+	mysensor.setConfig(CONFIG_INIT_CONVERSION,
+										 CONFIG_CHN1,
+										 CONFIG_CONTINUOUS_CONVERSION_MODE,
+										 CONFIG_16BIT_15SPS,
+										 CONFIG_GAIN_1X);
+
+	while(1){
+
+		for(int i=0; i<4; i++){
+
+			std::cout << "CHANNEL " << i << " is value " << mysensor.readChannel(i) << std::endl;
+		}
+
+		std::cout << std::endl;
+		sleep(3);
+
+	}	
+
+}
+
