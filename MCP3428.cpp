@@ -38,13 +38,7 @@ MCP3428::~MCP3428(){
 }
 
 
-struct MCP3428::_configReg{
-	uint8_t RDY_bar : 1;
-	uint8_t channel_select : 2;
-	uint8_t conversion_mode : 1;
-	uint8_t resolution : 2;
-	uint8_t gain : 2;
-};
+
 
 
 void MCP3428::setConfig(uint8_t RDYflag = CONFIG_CONVERSION_NO_EFFECT,
@@ -96,9 +90,11 @@ int16_t MCP3428::readChannel(uint8_t channel){
 
 double MCP3428::readChannelScaled(uint8_t channel){
 
-	int16_t digital_value = readChannel(uint8_t channel);
+	//int16_t digital_value = readChannel(uint8_t channel);
+	//#TODO need to fix ** to pow()
+	//return ((digital_value/(2**(12+(2 * _configReg.resolution)))) / (2**_configReg.gain))*2.048;
+	return 2.0;
 
-	return ((digital_value/(2**(12+(2 * _configReg.resolution)))) / (2**_configReg.gain))*2.048;
 }
 
 
