@@ -39,12 +39,12 @@ class MCP3428{
 		int _PGAgain;
 
 		struct configRegStruct{
-			uint8_t RDY_bar : 1;
-			uint8_t channel_select : 2;
-			uint8_t conversion_mode : 1;
+			uint8_t gain : 2;			
 			uint8_t resolution : 2;
-			uint8_t gain : 2;
-		};
+			uint8_t conversion_mode : 1;
+			uint8_t channel_select : 2;
+			uint8_t RDY_bar : 1;
+		}__attribute__((__packed__));
 
 		uint8_t _data[2];
 		configRegStruct _configReg;
