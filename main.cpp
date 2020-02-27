@@ -10,7 +10,7 @@ int main(){
 	mysensor.setConfig(CONFIG_INIT_CONVERSION,
 										 CONFIG_CHN1,
 										 CONFIG_CONTINUOUS_CONVERSION_MODE,
-										 CONFIG_16BIT_15SPS,
+										 CONFIG_12BIT_240SPS,
 										 CONFIG_GAIN_1X);
 
 	while(1){

@@ -65,6 +65,7 @@ void MCP3428::_setChannel(uint8_t channel){
 
 void MCP3428::_writeConfig(){
 	write(_fd, &_configReg, 1);
+	usleep(5000); //need this since new sample after 1/240 s
 }
 
 
@@ -83,7 +84,7 @@ int16_t MCP3428::readChannel(uint8_t channel){
 		printf("Error : Input/Output error \n");
 	}
 
-	uint16_t tmp_hold = ((_data[0]) * 256 + _data[1]);
+	uint16_t tmp_hold = ((_data[0]&0x0f) * 256 + _data[1]);
 	return *((int16_t*)(&tmp_hold));
 
 }
