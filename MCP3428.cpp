@@ -22,23 +22,11 @@ https://www.controleverything.com/content/Analog-Digital-Converters?sku=MCP3428_
 
 
 MCP3428::MCP3428(uint8_t i2c_address = 0x68){
-	
-	char *bus = I2C_BUS;
-	if((_fd = open(bus, O_RDWR)) < 0){
-		std::cout << "Failed to open the bus" << std::endl;
-	}
-
-	ioctl(_fd, I2C_SLAVE, i2c_address);
-
+	_slaveAddress = i2c_address;
 }
 
 MCP3428::~MCP3428(){
-	
-	close(_fd);	
 }
-
-
-
 
 
 void MCP3428::setConfig(uint8_t RDYflag = CONFIG_CONVERSION_NO_EFFECT,
@@ -57,14 +45,14 @@ void MCP3428::setConfig(uint8_t RDYflag = CONFIG_CONVERSION_NO_EFFECT,
 
 }
 
-void MCP3428::_setChannel(uint8_t channel){
+void MCP3428::_setChannel(uint8_t channel_number){
 	_configReg.channel_select = channel;
 	_writeConfig();
 	
 }
 
 void MCP3428::_writeConfig(){
-	write(_fd, &_configReg, 1);
+	i2c.write(_slaveAddress, &_configReg, 1);
 	usleep(5000); //need this since new sample after 1/240 s
 }
 
@@ -73,23 +61,21 @@ void MCP3428::readConfig(){
 
 }
 
-int16_t MCP3428::readChannel(uint8_t channel){
+int16_t MCP3428::readChannel(uint8_t channel_number){
 	
-	_setChannel(channel);
+	_setChannel(channel_number);
 	
 	uint8_t reg[1] = {0x00};
-	write(_fd, reg, 1);
+	i2c.write(_slaveAddress, reg, 1);	
 
-	if(read(_fd, &_data, 2) != 2){
-		printf("Error : Input/Output error \n");
-	}
+	i2c.read(_slaveAddress, _data, 2)
 
 	uint16_t tmp_hold = ((_data[0]&0x0f) * 256 + _data[1]);
 	return *((int16_t*)(&tmp_hold));
 
 }
 
-double MCP3428::readChannelScaled(uint8_t channel){
+double MCP3428::readChannelScaled(uint8_t channel_number){
 
 	//int16_t digital_value = readChannel(uint8_t channel);
 	//#TODO need to fix ** to pow()
