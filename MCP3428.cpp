@@ -46,13 +46,13 @@ void MCP3428::setConfig(uint8_t RDYflag = CONFIG_CONVERSION_NO_EFFECT,
 }
 
 void MCP3428::_setChannel(uint8_t channel_number){
-	_configReg.channel_select = channel;
+	_configReg.channel_select = channel_number;
 	_writeConfig();
 	
 }
 
 void MCP3428::_writeConfig(){
-	i2c.write(_slaveAddress, &_configReg, 1);
+	i2c.write_std(_slaveAddress, (uint8_t*)(&_configReg), 1);
 	usleep(5000); //need this since new sample after 1/240 s
 }
 
@@ -66,9 +66,9 @@ int16_t MCP3428::readChannel(uint8_t channel_number){
 	_setChannel(channel_number);
 	
 	uint8_t reg[1] = {0x00};
-	i2c.write(_slaveAddress, reg, 1);	
+	i2c.write_std(_slaveAddress, reg, 1);	
 
-	i2c.read(_slaveAddress, _data, 2)
+	i2c.read_std(_slaveAddress, _data, 2);
 
 	uint16_t tmp_hold = ((_data[0]&0x0f) * 256 + _data[1]);
 	return *((int16_t*)(&tmp_hold));

@@ -65,7 +65,7 @@ class MCP3428{
 					   uint8_t channel,
 					   uint8_t conversion_mode,
 					   uint8_t resolution,
-					   uint8_t PGA)
+					   uint8_t PGA);
 	
 		void readConfig();
 		
